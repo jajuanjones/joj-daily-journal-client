@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react"
+import { getMoods } from "./mood/MoodManager"
+import { getTags } from "./tag/TagManager"
+import "./EntryForm.css" 
 
-export const EntryForm = ({ entry, moods, onFormSubmit }) => {
+export const EntryForm = ({ entry, moods, tags, onFormSubmit }) => {
     const [editMode, setEditMode] = useState(false)
     const [updatedEntry, setUpdatedEntry] = useState(entry)
+    const [checkedTags, setIsCheckedTags] = useState([])
 
     useEffect(() => {
         setUpdatedEntry(entry)
@@ -23,12 +27,11 @@ export const EntryForm = ({ entry, moods, onFormSubmit }) => {
         newEntry[event.target.name] = event.target.value
         setUpdatedEntry(newEntry)
     }
-
-
-
+    // we need a function that adds our array of checked tags to our object
     const constructNewEntry = () => {
         const copyEntry = { ...updatedEntry }
         copyEntry.moodId = parseInt(copyEntry.moodId)
+        copyEntry.tags = checkedTags
         if (!copyEntry.date) {
             copyEntry.date = Date(Date.now()).toLocaleString('en-us').split('GMT')[0]
         }
@@ -78,6 +81,34 @@ export const EntryForm = ({ entry, moods, onFormSubmit }) => {
                                         </option>
                                     ))}
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="field">
+                        <label htmlFor="tagId" className="label">Tag(s): </label>
+                        <div className="control">
+                            <div className="tagInput">
+                                {
+                                    tags.map(t => (
+                                    <div key={t.id}> 
+                                        <input className="tagCheckboxes" type="checkbox"
+                                        proptype="int"
+                                        value={t.id}
+                                        onChange={evt => {
+                                            if(evt.target.checked) {
+                                                const copy = [...checkedTags]
+                                                copy.push(t.id)
+                                                setIsCheckedTags(copy)
+                                            } else {
+                                                const copy = [...checkedTags]
+                                                copy.splice(checkedTags?.indexOf(t.id), 1)
+                                                setIsCheckedTags(copy)
+                                            }
+                                        }}
+                                        /><p>{t.label}</p>
+                                    </div>
+                                    ))
+                                }
                             </div>
                         </div>
                     </div>

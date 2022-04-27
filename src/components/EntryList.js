@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Entry } from "./Entry";
 import { searchEntries } from "./EntryManager";
 
-export const EntryList = ({ moods, entries, onEditButtonClick, onDeleteButtonClick }) => {
+export const EntryList = ({ moods, entries, tags, onEditButtonClick, onDeleteButtonClick }) => {
 
   const [filteredEntries, setEntries] = useState([]);
   const [searchedTerm, setTerm] = useState("");
@@ -64,6 +64,7 @@ export const EntryList = ({ moods, entries, onEditButtonClick, onDeleteButtonCli
             key={entry.id}
             entry={entry}
             mood={moods.find(m => m.id === entry.moodId)}
+            tags={tags}
             onEditButtonClick={onEditButtonClick}
             onDeleteButtonClick={onDeleteButtonClick}
           />

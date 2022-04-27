@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Entry = ({ entry, mood, onEditButtonClick, onDeleteButtonClick }) => {
+export const Entry = ({ entry, mood, tags, onEditButtonClick, onDeleteButtonClick }) => {
   const getMessageType = () => {
     if (mood) {
       switch (mood.label) {
@@ -25,6 +25,14 @@ export const Entry = ({ entry, mood, onEditButtonClick, onDeleteButtonClick }) =
         <p className="entry__entry">{entry.entry}</p>
         <p className="entry__date">{entry.date}</p>
         <p className="entry__mood">{mood?.label}</p>
+        {/*map over entry tags prop for id in entry.tags array
+        then find the tag label from the tags table from the row with a matching entry.tag id
+        then return the label of each tag */}
+        <p className="entry__tags">{entry.tags.map(t => {
+          return tags.find((tag) => {
+            console.log(tags, tag, t)
+            return tag.id === t.id})?.label
+        })}</p>
         <div className="buttons">
           <button className={`button ${getMessageType()} is-outlined`} onClick={
             () => {
